@@ -29,6 +29,7 @@ from myjd_api.myjd import jdownloader_pause
 from myjd_api.myjd import jdownloader_start
 from myjd_api.myjd import jdownloader_stop
 from myjd_api.myjd import move_to_downloads
+from myjd_api.myjd import download
 from myjd_api.myjd import remove_from_linkgrabber
 from myjd_api.myjd import retry_decrypt
 from myjd_api.myjd import update_jdownloader
@@ -233,18 +234,26 @@ def app_container(port, configfile, _device):
         else:
             return abort(400, "Failed")
 
-    @app.post("/myjd_add")
+    @app.post("/myjd_add/")
     @auth_basic(is_authenticated_user)
     def myjd_add():
-        ## TODO Test!
+        """
+            Example of required body as JSON (application/json)
+            {
+                "link": "https://foo.bar/yyy",
+                "password": "barfoo",
+                "subdir": "/var/xxx"
+            }
+        """
         global device
         body = request.json
 
         if "link" in body:
             link = body['link']
             password = body['password'] if "password" in body else ""
+            subdir = body['subdir'] if "subdir" in body else None
 
-            device = download(configfile, device, "", "", link, password)
+            device = download(configfile, device, "", subdir, link, password)
         if device:
             return "Success"
         else:

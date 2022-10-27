@@ -375,9 +375,14 @@ def download(configfile, device, title, subdir, links, password, full_path=None)
             device = get_device(configfile)
 
         links = str(links)
-        crawljobs = Config('Crawljobs', configfile)
-        autostart = crawljobs.get("autostart")
-        usesubdir = crawljobs.get("subdir")
+        try: 
+            crawljobs = Config('Crawljobs', configfile)
+            autostart = crawljobs.get("autostart")
+            usesubdir = crawljobs.get("subdir")
+        except: 
+            autostart = True
+            usesubdir = (subdir is not None)
+            
         priority = "DEFAULT"
 
         if full_path:
