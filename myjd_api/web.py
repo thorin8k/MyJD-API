@@ -233,6 +233,24 @@ def app_container(port, configfile, _device):
         else:
             return abort(400, "Failed")
 
+    @app.post("/myjd_add")
+    @auth_basic(is_authenticated_user)
+    def myjd_add():
+        ## TODO Test!
+        global device
+        body = request.json
+
+        if "link" in body:
+            link = body['link']
+            password = body['password'] if "password" in body else ""
+
+            device = download(configfile, device, "", "", link, password)
+        if device:
+            return "Success"
+        else:
+            return abort(400, "Failed")
+
+
     @app.post("/myjd_update/")
     @auth_basic(is_authenticated_user)
     def myjd_update():
