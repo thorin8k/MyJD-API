@@ -242,7 +242,7 @@ def app_container(port, configfile, _device):
             {
                 "link": "https://foo.bar/yyy",
                 "password": "barfoo",
-                "subdir": "/var/xxx"
+                "full_path": "/var/xxx"
             }
         """
         global device
@@ -251,9 +251,9 @@ def app_container(port, configfile, _device):
         if "link" in body:
             link = body['link']
             password = body['password'] if "password" in body else ""
-            subdir = body['subdir'] if "subdir" in body else None
+            full_path = body['full_path'] if "full_path" in body else None
 
-            device = download(configfile, device, "", subdir, link, password)
+            device = download(configfile, device, "", None, link, password, full_path=full_path)
         if device:
             return "Success"
         else:
