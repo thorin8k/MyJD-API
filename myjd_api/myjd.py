@@ -384,9 +384,11 @@ def download(configfile, device, title, subdir, links, password, full_path=None)
             usesubdir = (subdir is not None)
             
         priority = "DEFAULT"
+        overwriteRules = False
 
         if full_path:
             path = full_path
+            overwriteRules = True
         else:
             if usesubdir:
                 path = subdir + "/<jd:packagename>"
@@ -405,7 +407,7 @@ def download(configfile, device, title, subdir, links, password, full_path=None)
                     "priority": priority,
                     "downloadPassword": password,
                     "destinationFolder": path,
-                    "overwritePackagizerRules": False
+                    "overwritePackagizerRules": overwriteRules
                 }])
         except myjd_api.myjdapi.TokenExpiredException:
             device = get_device(configfile)
